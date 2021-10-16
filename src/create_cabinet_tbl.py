@@ -100,7 +100,6 @@ if __name__ == "__main__":
         # Load proccessed roles table into pandas data frame
         file_obj = s3.Bucket('polemics').Object('processed/clean_roles_tbl.csv').get()
         roles_tbl = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
-
         #Load reference table for cabinent membership status
         file_obj = s3.Bucket('polemics').Object('references/exclusion_role_tbl.csv').get()
         false_cab = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
@@ -110,9 +109,10 @@ if __name__ == "__main__":
         roles_tbl.insert(len(list(roles_tbl)), "uid", uid2, True)
         false_cab.insert(len(list(false_cab)), "uid", uid1, True)
         common = roles_tbl.merge(false_cab, on=['uid'])
+        print('Length before',len(roles_tbl))
         df = roles_tbl[~roles_tbl['uid'].isin(common['uid'])]
         df.drop(columns=['uid'])
-
+        print('Length after',len(df))
         #exclude non-cabinet roles from data frame
         df2 = df[df['Role'].isin(['Minister','Minister (Acting)',
                                   'Minister (Acting Minister)','Secretary of State'])]
