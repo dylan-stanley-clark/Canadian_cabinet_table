@@ -102,9 +102,8 @@ if __name__ == "__main__":
         roles_tbl = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
 
         #Load reference table for cabinent membership status
-        file_obj = s3.Bucket('polemics').Object('references/roles_tbl_changes.xlsx').get()
-        false_cab = pd.read_excel(io.BytesIO(file_obj['Body'].read()),'disclude_roles')
-
+        file_obj = s3.Bucket('polemics').Object('references/exclusion_role_tbl.csv').get()
+        false_cab = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
         #exclude select roles that would otherwise be erroneously included
         uid1 = str(false_cab['Name'])+str(false_cab['Title'])+str(false_cab['Start Date'])
         uid2 = str(roles_tbl['Name'])+str(roles_tbl['Title'])+str(roles_tbl['Start Date'])
@@ -119,9 +118,7 @@ if __name__ == "__main__":
                                   'Minister (Acting Minister)','Secretary of State'])]
 
         #include select roles that were erroneously discluded
-        #file_obj = s3.Bucket('polemics').Object('references/roles_tbl_changes.xlsx').get()
         file_obj = s3.Bucket('polemics').Object('references/roles_inclusion_tbl.csv').get()
-        #true_cab = pd.read_excel(io.BytesIO(file_obj['Body'].read()),'include_roles')
         true_cab = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
         print(true_cab.head())
 
