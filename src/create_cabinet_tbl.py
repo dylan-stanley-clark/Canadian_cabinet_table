@@ -106,7 +106,7 @@ if __name__ == "__main__":
         false_cab = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
         #exclude select roles that would otherwise be erroneously included
         uid1 = false_cab['Name']+false_cab['Title']+false_cab['Start Date']
-        uid2 = roles_tbl['Name']+roles_tbl['Title'])+roles_tbl['Start Date']
+        uid2 = roles_tbl['Name']+roles_tbl['Title']+roles_tbl['Start Date']
         roles_tbl.insert(len(list(roles_tbl)), "uid", uid2, True)
         false_cab.insert(len(list(false_cab)), "uid", uid1, True)
         common = roles_tbl.merge(false_cab, on=['uid'])
