@@ -119,10 +119,12 @@ if __name__ == "__main__":
                                   'Minister (Acting Minister)','Secretary of State'])]
 
         #include select roles that were erroneously discluded
-        file_obj = s3.Bucket('polemics').Object('references/roles_tbl_changes.xlsx').get()
-        true_cab = pd.read_excel(io.BytesIO(file_obj['Body'].read()),'include_roles')
-        print(true_cab)
-        
+        #file_obj = s3.Bucket('polemics').Object('references/roles_tbl_changes.xlsx').get()
+        file_obj = s3.Bucket('polemics').Object('references/roles_inclusion_tbl.csv').get()
+        #true_cab = pd.read_excel(io.BytesIO(file_obj['Body'].read()),'include_roles')
+        true_cab = pd.read_csv(io.BytesIO(file_obj['Body'].read()))
+        print(true_cab.head())
+
         df2 = df2.append(true_cab, ignore_index=True)
 
         #convert all date to same format (day-month-year)
